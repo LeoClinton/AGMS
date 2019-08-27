@@ -14,6 +14,10 @@ const expressvalidator=require('express-validator');
 
 //require('./passport')(passport)
 
+// const admin = {
+//     Adminid = 'admin',
+//     Adpassword = 'admin'
+// }
 const TWO_HOURS= 1000 * 60 * 60 * 2
 var app=express();
 var router=express.Router();

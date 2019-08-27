@@ -28,6 +28,12 @@ module.exports = function(passport) {
    });
  });
 
+ passport.deserializeUser(function(username, done){
+  connection.query("SELECT * FROM admintable WHERE username = ? ", [username],
+   function(err, rows){
+    done(err, rows[0]);
+   });
+ });
  /*
  passport.use(
   'local-signup',
@@ -101,6 +107,9 @@ passport.use(
    });
   })
  );
+
+ 
+ 
 
  passport.use(
   'local-sellerlogin',
