@@ -179,34 +179,28 @@ module.exports= (app, passport) => {
 
        })
 
-       app.post('/admin_login', (req, res) => {
-           console.log('admin login');
-        
-           username=req.body.username;
+       app.post('/admin_login', passport.authenticate('local-adminlogin', {
+            successRedirect: '/admin',
+            failureRedirect: '/admin_login',
+            failureFlash: true
+        }),
+        function(req, res){
+            if(req.body.remember){
+            req.session.cookie.maxAge = 1000 * 60 * 3;
+            }else{
+            req.session.cookie.expires = false;
+            }
+            res.redirect('/');
+        });
 
-           password= req.body.passport;
+        app.get('/admin', (req, res) => {
 
-           const myquery = "SELECT username,password FROM admintable WHERE username = ? AND password = ? ";
+            res.redirect('/adminworkspace.html');
 
-           connection.query(myquery, [username , password], (err, result, fields) => {
-               if(!err)
-               {
-                   console.log('admin checked');
-                   console.log(result);
-                   console.log(fields);
-                   
-                   res.redirect('/adminworkspace.html')
+        })
 
-               }
-               else
-               {
-                   console.log(err);
-                   res.redirect('/web/adminlogin.html');
-                
-               }
-
-
-           })
+       app.get('/artist_details', (req, res) => {
+           res.redirect('/web/artistdetails.html')
        })
 };
 
