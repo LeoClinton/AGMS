@@ -18,6 +18,9 @@
 --
 -- Table structure for table `admintable`
 --
+create database if not exists server;
+
+use server;
 
 DROP TABLE IF EXISTS `admintable`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -26,7 +29,8 @@ CREATE TABLE `admintable` (
   `username` varchar(50) NOT NULL,
   `password` varchar(45) NOT NULL,
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
+-- ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -56,7 +60,8 @@ CREATE TABLE `artist` (
   `a_namel` varchar(45) NOT NULL,
   `a_place` varchar(45) NOT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
+-- ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +93,8 @@ CREATE TABLE `customer` (
   `c_gender` varchar(45) NOT NULL,
   `zipcode` int(11) NOT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
+-- ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
