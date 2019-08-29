@@ -4,10 +4,6 @@ const session=require('express-session');
 const morgan=require('morgan');
 const passport=require('passport');
 const path =require('path');
-const async = require('async');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
-
 
 
 const cookieParser = require('cookie-parser');
