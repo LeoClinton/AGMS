@@ -202,6 +202,16 @@ module.exports= (app, passport) => {
        app.get('/artist_details', (req, res) => {
            res.redirect('/web/artistdetails.html')
        })
+
+       //for resetting passsword
+
+       app.get('/forgot_password', (req, res) => {
+           res.redirect('forgot.html');
+           
+       })
+       
+
+
 };
 
 function isLoggedIn(req, res, next){
