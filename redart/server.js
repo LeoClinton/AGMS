@@ -4,6 +4,7 @@ const session=require('express-session');
 const morgan=require('morgan');
 const passport=require('passport');
 const path =require('path');
+const hbs = require('express-handlebars');
 
 
 const cookieParser = require('cookie-parser');
@@ -37,15 +38,20 @@ const IN_PROD =NODE_ENV === 'production'
 require('./config/passport')(passport);
 
 const bodyparser=require('body-parser');
-app.use(express.static('./default'))
+app.use(express.static('./views'))
 app.use(cookieParser());
 
 app.use(morgan('dev'));
+
+//view engine setup
+app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + '/views/layouts' }));
+
+app.set('view engine', 'hbs');
 //for user login
 //var authenticateController=require('./user');
 
 //code used to receive decent data.
-app.set('view engine', 'ejs');
+//app.set('view engine', 'ejs');
 
 //app.engine('html', require('ejs').renderFile);
 
@@ -71,7 +77,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-require('./app/routes.js')(app, passport);
+require('./app/routes.js')(app, passport, hbs);
 
 app.listen(PORT,()=> console.log("server 3000 port is running . . .")); 
 
