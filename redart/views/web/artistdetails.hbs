@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Artist Details</title>
+</head>
+<body>
+    <table border="5px" style="padding : 5px; align : center;" >
+        <thead>
+          <tr>
+              <th>UserID</th>
+              <th>First Name</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+          </tr>
+        </thead>
+
+        <tbody>
+             {{#each data }}
+          <tr>
+            
+            <td> {{ data[0].userid }} </td>
+            <td> {{ data[0].a_namef }} </td>
+            <td> {{ data[0].a_phoneno }} </td>
+            <td> {{ data[0].a_email }} </td>
+                
+          </tr>
+           {{/each }}
+          
+          <tr>
+            <td>Alan</td>
+            <td>Jellybean</td>
+            <td>$3.76</td>
+          </tr>
+          <tr>
+            <td>Jonathan</td>
+            <td>Lollipop</td>
+            <td>$7.00</td>
+          </tr>
+        </tbody>
+      </table>
+</body>
+</html>

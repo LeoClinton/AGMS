@@ -80,7 +80,11 @@ module.exports= (app, passport, hbs) => {
 
        app.get('/seller', isLoggedIn, (req, res) => {
            
-           res.redirect('/artistmain.html');
+            res.render('artistmain.hbs', {message:req.flash('loginMessage'), name : req.user.a_namef });
+
+            // { name : req.user.a_namef }
+
+           //res.redirect('/artistmain.html');
 
        })
 
@@ -176,7 +180,13 @@ module.exports= (app, passport, hbs) => {
         })
 
        app.get('/index-1', isLoggedIn, (req, res) => {
-         res.render('custmain.hbs', { title :req.user });
+
+        const name = req.user;
+
+         res.render('custmain.hbs', { name : req.user.c_namef });
+
+         console.log('this is the value  '+name);
+
         //res.redirect('/custmain.html');
        });
 
@@ -207,13 +217,42 @@ module.exports= (app, passport, hbs) => {
 
         app.get('/admin', (req, res) => {
 
-            res.redirect('/adminworkspace.html');
+            res.render('adminworkspace.hbs');
 
         })
 
+        //getting artist details that will be displayed to the ADMIN
        app.get('/artist_details', (req, res) => {
-           res.redirect('/web/artistdetails.html')
+        const myquery = "select userid, a_namef, a_phoneno, a_email from artist ";
+
+        connection.query(myquery, (err, result, fields ) => {
+
+            if(!err)
+            {
+                //console.log('Query result :- '+ result[0]);
+                
+               // console.log(fields);
+
+                res.render('web/artistdetails.hbs', { data : result });
+                //res.render('web/artistdetails.hbs', {data : result })
+                
+            }
+            else
+            {
+                res.render('adminworkspace.hbs');
+
+            }
+
+        })
+           
        })
+
+    //    app.get('/artist_details', (req, res) => {
+
+    //     //sele
+    //    })
+
+
 
 
        // password forgot session
@@ -246,6 +285,15 @@ module.exports= (app, passport, hbs) => {
        )
 
        
+        app.get('/custmain', (req, res )=> {
+            res.render('custmain.hbs');
+
+        })
+
+        app.get('/artistmain', (req, res) => {
+            res.render('artistmain.hbs')
+        })
+
 
 
 
