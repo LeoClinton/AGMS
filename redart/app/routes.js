@@ -247,6 +247,26 @@ module.exports= (app, passport, hbs) => {
            
        })
 
+       app.get('/customer_details', (req, res ) => {
+
+            const myquery = " SELECT userid, c_namef, c_phoneno, c_email FROM customer";
+
+            connection.query(myquery, (err, result, field ) => {
+                if(!err)
+                {
+                    res.render('customerdetails.hbs', { data : result });
+
+                }
+                else
+                {
+                    res.render('adminworkspace.hbs');
+
+
+                }
+            })
+       })
+
+       
     //    app.get('/artist_details', (req, res) => {
 
     //     //sele
