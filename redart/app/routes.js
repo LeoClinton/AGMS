@@ -26,7 +26,7 @@ module.exports= (app, passport, hbs) => {
     //app.set('default', __dirname + '/default');
 
      app.get('/', (req, res) => {
-         res.redirect('indexmain.html');
+         res.render('indexmain.hbs');
 
      });
 
