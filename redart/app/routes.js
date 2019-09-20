@@ -278,7 +278,7 @@ module.exports= (app, passport, hbs) => {
        // password forgot session
 
        app.get('/cust_forgot', (req ,res ) => {
-           res.redirect('/web/Forgot_Pass/web/index.html');
+           res.redirect('/web/Forgot_Pass/web/custforgot.html');
 
        })
 
@@ -290,19 +290,41 @@ module.exports= (app, passport, hbs) => {
         connection.query(myquery, [email], (err, result, field ) => {
             if(!err)
             {
+                console.log('data - ' +result[0]);
+
+            }
+            else
+            {
+                res.redirect('/web/Forgot_Pass/web/custforgot.html')
+            }
+
+            res.redirect('/web/Forgot_Pass/web/reset_password_cust.html')
+
+        })
+       }
+       )
+
+       app.post('/artist_forgot', (req, res )=> {
+        email= req.body.email;
+
+        const myquery = "SELECT a_email FROM artist WHERE a_email = ? ";
+
+        connection.query(myquery, [email], (err, result, field ) => {
+            if(!err)
+            {
                 console.log('data - ' +result);
 
             }
             else
             {
-                res.redirect('/web/Forgot_Pass/web/index.html')
+                res.redirect('/web/Forgot_Pass/web/artistforgot.html')
             }
 
             res.redirect('/web/Forgot_Pass/web/reset_password.html')
 
         })
-       }
-       )
+        }
+        )
 
        
         app.get('/custmain', (req, res )=> {
@@ -315,8 +337,34 @@ module.exports= (app, passport, hbs) => {
         })
 
 
+        app.post('/artistupload', (req, res) => {
+            id=req.body.imgid;
+            img=req.body.fileupload;
 
+            const myquery="INSERT INTO gallery (g_id, g_images) VALUES (? ,?) ";
 
+            connection.query(myquery, [ id , img ], (err, result, field) => {
+                if(!err)
+                {
+                    console.log('Image insterted');
+                    res.redirect('/artist-upload.html');
+                }
+                else
+                {
+                    console.log(err);
+
+                }
+            })
+        })
+
+        
+        app.post('/resetcust',(req, res) => {
+            email=req.body.email;
+            pass=req.body.password;
+
+            myquery="UPDATE customer SET password = ? WHERE c_email= ?";
+            
+        })
 
 };
 
