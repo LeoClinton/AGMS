@@ -19,7 +19,9 @@ connection.query('USE ' + dbconfig.database);
 
 
 
-module.exports= (app, passport, hbs) => {
+module.exports= (app, passport, hbs,  nodemailer) => {
+
+    
 
     //app.use(flash());
 
@@ -182,8 +184,10 @@ module.exports= (app, passport, hbs) => {
        app.get('/index-1', isLoggedIn, (req, res) => {
 
         const name = req.user;
-
-         res.render('custmain.hbs', { name : req.user.c_namef });
+    
+         res.render('custmain.hbs', { name : req.user.c_namef,  });
+         //req.session.name=c_namef; 
+        
 
          console.log('this is the value  '+name);
 
@@ -278,31 +282,41 @@ module.exports= (app, passport, hbs) => {
        // password forgot session
 
        app.get('/cust_forgot', (req ,res ) => {
-           res.redirect('/web/Forgot_Pass/web/custforgot.html');
+           res.render('web/Forgot_Pass/web/custforgot.hbs');
 
        })
 
-       app.post('/cust_forgot', (req, res )=> {
-           email= req.body.email;
+       app.get('/artist_forgot' , (req, res ) => {
+        res.render('web/Forgot_Pass/web/artistforgot.hbs');
+    })
+
+       app.post('/cust_forgot',(req, res ) => {
+
+        cemail= req.body.email;
 
         const myquery = "SELECT c_email FROM customer WHERE c_email = ? ";
 
-        connection.query(myquery, [email], (err, result, field ) => {
-            if(!err)
-            {
-                console.log('data - ' +result[0]);
-
+        connection.query(myquery, [cemail], (err, result, field ) => {
+            if(err)
+            { 
+                console.log('error --->' +err)
+                res.render('web/Forgot_Pass/web/custforgot.hbs', { fail : ' Email not yet registered '});
             }
             else
             {
-                res.redirect('/web/Forgot_Pass/web/custforgot.html')
-            }
+                console.log('this is right :- '+ result);
 
-            res.redirect('/web/Forgot_Pass/web/reset_password_cust.html')
+                res.render('web/Forgot_Pass/web/reset_password_cust.hbs', {message : ' Email verified'} );
+            }
+            
+            // res.redirect('/web/Forgot_Pass/web/reset_password_cust.html')
 
         })
-       }
-       )
+    })
+       
+   
+       
+    
 
        app.post('/artist_forgot', (req, res )=> {
         email= req.body.email;
@@ -312,19 +326,20 @@ module.exports= (app, passport, hbs) => {
         connection.query(myquery, [email], (err, result, field ) => {
             if(!err)
             {
-                console.log('data - ' +result);
-
+                
+                res.render('web/Forgot_Pass/web/reset_password_art.hbs', {message : ' Email verified'} );
             }
             else
             {
-                res.redirect('/web/Forgot_Pass/web/artistforgot.html')
+                res.render('/web/Forgot_Pass/web/artistforgot.hbs')
             }
 
-            res.redirect('/web/Forgot_Pass/web/reset_password.html')
 
         })
         }
         )
+
+        
 
        
         app.get('/custmain', (req, res )=> {
@@ -357,14 +372,63 @@ module.exports= (app, passport, hbs) => {
             })
         })
 
-        
+        //send mails to the particular customer
         app.post('/resetcust',(req, res) => {
             email=req.body.email;
             pass=req.body.password;
 
+            var newUserMysql = {
+                email : email,
+                password : bcrypt.hashSync(pass, null, null)
+            }
+
             myquery="UPDATE customer SET password = ? WHERE c_email= ?";
+
+            connection.query(myquery,[ newUserMysql.password , newUserMysql.email ], ( err, result, fields) =>
+            {
+                if(!err)
+                {
+                    console.log(" The data modified ");
+                }    
+                else
+                {
+                     res.redirect('/web/Forgot_Pass/web/custforgot.html')
+
+                }
+                res.redirect('/cust_login')    
+            })
             
         })
+
+        app.post('/resetartist',(req, res) => {
+            email=req.body.email;
+            pass=req.body.password;
+
+            var newUserMysql = {
+                email : email,
+                password : bcrypt.hashSync(pass, null, null)
+            }
+
+            myquery="UPDATE artist SET password = ? WHERE a_email= ?";
+
+            connection.query(myquery,[ newUserMysql.password , newUserMysql.email ], ( err, result, fields) =>
+            {
+                if(!err)
+                {
+                    console.log(" The data modified ");
+                }    
+                else
+                {
+                    res.redirect('/web/Forgot_Pass/web/artistforgot.hbs')
+                }
+                res.redirect('/seller_login')    
+            })
+            
+        })
+
+
+        
+
 
 };
 

@@ -5,6 +5,7 @@ const morgan=require('morgan');
 const passport=require('passport');
 const path =require('path');
 const hbs = require('express-handlebars');
+//const expresssessions = require('express-session');
 
 
 const cookieParser = require('cookie-parser');
@@ -12,6 +13,8 @@ const flash=require('connect-flash');
 const LocalStrategy = require('passport-local').Strategy; 
 
 const expressvalidator=require('express-validator'); 
+const nodemailer = require('nodemailer');
+
 
 //require('./passport')(passport)
 
@@ -77,8 +80,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-require('./app/routes.js')(app, passport, hbs);
+require('./app/routes.js')(app, passport, hbs, nodemailer);
+
+// require('./nodemail/mail.js')( nodemailer );
+
 
 app.listen(PORT,()=> console.log("server 3000 port is running . . .")); 
 
 
+// module.exports= nodemailer;
