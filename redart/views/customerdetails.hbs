@@ -12,9 +12,18 @@
 </head>
 <body>
   <form>
+    <h2 style=" text-align-last: center;
+    background-color: lightslategrey;
+    -webkit-text-stroke-width: thin;
+    -webkit-text-emphasis-style: triangle;">CUSTOMER DETAILS</h2>
+      <h3 style=" text-align-last: center;
+    background-color: lightslategrey;
+    -webkit-text-stroke-width: thin;
+    ">{{ delcom }}</h3>
+
 <input style="width: 80px; padding: 10px; cursor: pointer; box-shadow: 6px 6px 5px; #999; -webkit-box-shadow: 6px 6px 5px #999; -moz-box-shadow: 6px 6px 5px #999; font-weight: bold; background: white; color: #000; border-radius: 8px; border: 1px solid #999; font-size: 100%;" type="button" value="Home" onclick="window.location.href='/admin'" />
-    <input style="width: 80px; padding: 10px; cursor: pointer; box-shadow: 6px 6px 5px; #999; -webkit-box-shadow: 6px 6px 5px #999; -moz-box-shadow: 6px 6px 5px #999; font-weight: bold; background: white; color: #000; border-radius: 8px; border: 1px solid #999; font-size: 100%;" type="button" value="Delete"/>
-    <input style="width: 80px; padding: 10px; cursor: pointer; box-shadow: 6px 6px 5px; #999; -webkit-box-shadow: 6px 6px 5px #999; -moz-box-shadow: 6px 6px 5px #999; font-weight: bold; background: white; color: #000; border-radius: 8px; border: 1px solid #999; font-size: 100%;" type="button" value="Edit" />
+    <a href="/cust_delete"><input style="width: 80px; padding: 10px; cursor: pointer; box-shadow: 6px 6px 5px; #999; -webkit-box-shadow: 6px 6px 5px #999; -moz-box-shadow: 6px 6px 5px #999; font-weight: bold; background: white; color: #000; border-radius: 8px; border: 1px solid #999; font-size: 100%;" type="button" value="Delete"/></a>
+    <a href=""><input style="width: 80px; padding: 10px; cursor: pointer; box-shadow: 6px 6px 5px; #999; -webkit-box-shadow: 6px 6px 5px #999; -moz-box-shadow: 6px 6px 5px #999; font-weight: bold; background: white; color: #000; border-radius: 8px; border: 1px solid #999; font-size: 100%;" type="button" value="Edit" /></a>
 </form>
     <table border="5px" style="padding : 5px; align : center;" >
         <thead>

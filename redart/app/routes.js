@@ -21,8 +21,11 @@ connection.query('USE ' + dbconfig.database);
 
 module.exports= (app, passport, hbs,  nodemailer) => {
 
-    
 
+
+    //app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'layout', layoutsDir: __dirname + './views/layouts' }));
+
+    app.set('view engine', 'hbs');
     //app.use(flash());
 
     //app.set('default', __dirname + '/default');
@@ -31,6 +34,7 @@ module.exports= (app, passport, hbs,  nodemailer) => {
          res.render('indexmain.hbs');
 
      });
+
 
     app.get('/cust_login', function(req, res){
         res.redirect('/web/index.html')
@@ -427,6 +431,33 @@ module.exports= (app, passport, hbs,  nodemailer) => {
         })
 
 
+        app.get('/cust_delete', (req, res) => {
+            res.render('customer_delete.hbs');
+            
+        } )
+
+    app.post('/cust_delete', (req, res) => {
+
+        const id=req.body.id;
+
+
+        const delquery=" DELETE FROM customer WHERE userid = ?";
+
+        connection.query(delquery, [id], (err, result, field) => {
+            if(!err)
+            {
+                console.log("Deleted customer ");
+                //res.send({delcom : "Customer deleted "});
+                res.redirect('/customer_details');
+
+
+            }
+            else
+            {
+                res.redirect('/cust_delete' );
+            }
+        } )
+    })
         
 
 
