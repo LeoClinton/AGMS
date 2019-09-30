@@ -131,6 +131,8 @@
 	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do</p>
 	</div>
 	</div>
+
+
 	<div class="dt-sc-sorting-container">
 	<a data-filter="*" href= "#" title="09" class="dt-sc-tooltip-top active-sort type1 dt-sc-button">All</a>
 	<a data-filter=".nature" href= "#" title="06" class="dt-sc-tooltip-top type1 dt-sc-button">Nature</a>
@@ -138,12 +140,13 @@
 	<a data-filter=".street" href= "#" title="05" class="dt-sc-tooltip-top type1 dt-sc-button">Street</a>
 	<a data-filter=".still-life" href= "#" title="08" class="dt-sc-tooltip-top type1 dt-sc-button">Still life</a>
 	</div>
+
 	<div class="portfolio-fullwidth">
 	<div class="portfolio-grid">
 	<div class="dt-sc-portfolio-container isotope"> 
 	<div class="portfolio nature still-life dt-sc-one-fourth">
 	<figure>
-	<img src="images/portfolio-images/img-1.jpg" alt="" title="">
+	<img src=" {{ view }}"  height= "200 " width= " 200" >
 	<figcaption>
 	<div class="portfolio-detail">
 	<div class="views">
@@ -289,8 +292,8 @@
 	</div>
 	</div>
 	<div class="aligncenter">
-	<a href="artist-upload.html" class="loadmore dt-sc-button medium type3 with-icon"><i class="fa fa-picture-o"></i> <span> Upload images </span> </a>
-		<button><a href=" artist-upload.html ">click here</a></button>
+	<a href="/imageupload" style=" background: whitesmoke; color: black;padding: 10px;border-color: red; "><i class="fa fa-picture-o"></i> <span> Upload images </span> </a>
+<!--		<button><a href=" artist-upload.html ">click here</a></button>-->
 </div>
 	<div class="dt-sc-hr-invisible-small"></div>
 	</div>

@@ -86,7 +86,7 @@ module.exports= (app, passport, hbs,  nodemailer) => {
 
        app.get('/seller', isLoggedIn, (req, res) => {
            
-            res.render('artistmain.hbs', {message:req.flash('loginMessage'), name : req.user.a_namef });
+            res.render('artistmain.hbs', { name : req.user.a_namef });
 
             // { name : req.user.a_namef }
 
@@ -214,8 +214,10 @@ module.exports= (app, passport, hbs,  nodemailer) => {
             failureRedirect: '/admin_login',
             failureFlash: true
         }),
-        function(req, res){
-            if(req.body.remember){
+        function(req, res)
+        {
+            if(req.body.remember)
+            {
             req.session.cookie.maxAge = 1000 * 60 * 3;
             }else{
             req.session.cookie.expires = false;
@@ -296,47 +298,61 @@ module.exports= (app, passport, hbs,  nodemailer) => {
 
        app.post('/cust_forgot',(req, res ) => {
 
-        cemail= req.body.email;
+        const cemail= req.body.email;
 
         const myquery = "SELECT c_email FROM customer WHERE c_email = ? ";
 
         connection.query(myquery, [cemail], (err, result, field ) => {
-            if(err)
-            { 
-                console.log('error --->' +err)
-                res.render('web/Forgot_Pass/web/custforgot.hbs', { fail : ' Email not yet registered '});
-            }
-            else
-            {
-                console.log('this is right :- '+ result);
+            let rows;
+            if (err) {
+                console.log('error --->' + err)
 
-                res.render('web/Forgot_Pass/web/reset_password_cust.hbs', {message : ' Email verified'} );
+            } else {
+                rows = result.length;
+
+                if (rows > 0) {
+                    console.log('this is right :- ' + result);
+
+                    res.render('web/Forgot_Pass/web/reset_password_cust.hbs', {message: ' Email verified'});
+                } else
+                    {
+                    res.render('web/Forgot_Pass/web/custforgot.hbs', {fail: ' Email not yet registered '});
+                }
+
             }
             
             // res.redirect('/web/Forgot_Pass/web/reset_password_cust.html')
 
         })
     })
-       
-   
-       
-    
 
-       app.post('/artist_forgot', (req, res )=> {
-        email= req.body.email;
+       app.post('/artist_forgot', function(req, res ) {
+        const email= req.body.email;
 
-        const myquery = "SELECT a_email FROM artist WHERE a_email = ? ";
+       let myquery = 'SELECT a_email FROM artist WHERE a_email = ? ';
 
-        connection.query(myquery, [email], (err, result, field ) => {
-            if(!err)
+        connection.query( myquery , [email], (err, result) => {
+            let rows;
+            if(err)
             {
-                
-                res.render('web/Forgot_Pass/web/reset_password_art.hbs', {message : ' Email verified'} );
+                throw err;
+
             }
             else
             {
-                res.render('/web/Forgot_Pass/web/artistforgot.hbs')
+               rows = result.length;
+
+               if(rows > 0)
+               {
+                   res.render('web/Forgot_Pass/web/reset_password_art.hbs', {message : ' Email verified'} );
+               }
+               else
+               {
+                   res.render('web/Forgot_Pass/web/artistforgot.hbs', { fail : ' User not Registered'});
+               }
             }
+
+
 
 
         })
@@ -375,6 +391,25 @@ module.exports= (app, passport, hbs,  nodemailer) => {
                 }
             })
         })
+
+    app.get('/gallery', (req, res) => {
+
+        const myquery = "SELECT g_images FROM gallery";
+
+        connection.query(myquery,(err , result ) => {
+            if(err)
+            {
+                throw err;
+            }
+            else
+            {
+                console.log(result);
+
+                res.render('gallery.hbs',{ view : result });
+            }
+        })
+
+    })
 
         //send mails to the particular customer
         app.post('/resetcust',(req, res) => {
@@ -438,27 +473,98 @@ module.exports= (app, passport, hbs,  nodemailer) => {
 
     app.post('/cust_delete', (req, res) => {
 
-        const id=req.body.id;
+        let rows;
+        const Userid=req.body.id;
 
+        const selq="SELECT * FROM customer WHERE userid = ? ";
 
-        const delquery=" DELETE FROM customer WHERE userid = ?";
-
-        connection.query(delquery, [id], (err, result, field) => {
-            if(!err)
+        connection.query(selq, [Userid], (err, result) => {
+            if(err)
             {
-                console.log("Deleted customer ");
-                //res.send({delcom : "Customer deleted "});
-                res.redirect('/customer_details');
-
+                throw err;
 
             }
             else
             {
-                res.redirect('/cust_delete' );
+                rows=result.length;
+
+                if(rows > 0)
+                {
+                    const delquery=" DELETE FROM customer WHERE userid = ?";
+
+                    connection.query(delquery, [Userid], (err, result, field) => {
+                        if(err)
+                        {
+                            throw err;
+                        }
+                        else
+                        {
+                            console.log("Deleted customer ");
+                            //res.send({delcom : "Customer deleted "});
+                            res.redirect('/customer_details');
+
+                        }
+                    } )
+                }
+                else
+                {
+                    res.render('customer_delete.hbs', { delcom : " User not found "});
+                }
             }
-        } )
+        })
+
     })
-        
+
+    app.get('/art_delete', (req, res)=> {
+        res.render('artist_delete.hbs');
+    })
+
+    app.post('/art_delete', (req, res) => {
+        const Userid=req.body.id;
+
+        const selq = "SELECT * FROM artist WHERE userid = ?";
+
+        connection.query(selq, [Userid], (err, result) =>{
+            let rows;
+            if(err)
+            {
+                throw err;
+            }
+            else
+            {
+                rows=result.length;
+                if(rows > 0)
+                {
+                    const delquery=" DELETE FROM artist WHERE userid = ?";
+                    connection.query(delquery, [Userid], (err, result) => {
+
+                        if(err)
+                        {
+                            throw err;
+                        }
+                        else
+                        {
+                                console.log("Deleted artist "+ result );
+                                res.redirect('/artist_details');
+                        }
+                    } )
+                }
+                else
+                {
+                    console.log("Deleted artist "+ result );
+                    res.render('artist_delete', { delcom : " User not found "});
+                }
+            }
+        })
+
+
+
+    })
+
+    app.get('/imageupload', (req, res ) => {
+        res.render('art-upload.ejs');
+    })
+
 
 
 };

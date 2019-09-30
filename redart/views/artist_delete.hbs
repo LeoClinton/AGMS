@@ -23,7 +23,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 <body>
-<h2> </h2>
+<a href="/artist_details" style="text-decoration: none;background: lightblue;color: black;padding-top: 50px;" > Go Back </a>
+<!--<h2> {{ delcom }} </h2>-->
 <div >
     <!--element start here-->
     <div class="form-gap"></div>
@@ -34,18 +35,19 @@
 
                     <div style = "background: whitesmoke;"  class="panel-body">
                         <div class="text-center">
+                            <h3 style="background: red; color : white ;" > {{ delcom }} </h3>
                             <!-- <h3><i class="fa fa-lock fa-4x"></i></h3> -->
                             <h2 class="text-center">Delete Artist </h2>
                             <p>To delete the Artist enter the Artist Id</p>
 
                             <div class="panel-body">
 
-                                <form id="register-form" action="/cust_delete" role="form" autocomplete="off" class="form" method="POST">
+                                <form id="register-form" action="/art_delete" role="form" autocomplete="off" class="form" method="POST">
 
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
-                                            <input id="id" name="id" placeholder="Customer Id" class="form-control"  type="text" required>
+                                            <input id="id" name="id" placeholder="Artist Id" class="form-control"  type="text" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
