@@ -86,7 +86,7 @@ module.exports= (app, passport, hbs,  nodemailer) => {
 
        app.get('/seller', isLoggedIn, (req, res) => {
            
-            res.render('artistmain.hbs', { name : req.user.a_namef });
+            res.render('artistmain.hbs', { name : req.user.userid });
 
             // { name : req.user.a_namef }
 
@@ -189,7 +189,7 @@ module.exports= (app, passport, hbs,  nodemailer) => {
 
         const name = req.user;
     
-         res.render('custmain.hbs', { name : req.user.c_namef,  });
+         res.render('custmain.hbs', { name : req.user.userid,  });
          //req.session.name=c_namef; 
         
 
@@ -373,16 +373,31 @@ module.exports= (app, passport, hbs,  nodemailer) => {
 
 
         app.post('/artistupload', (req, res) => {
-            id=req.body.imgid;
+            aid=req.body.aid;
+            imgid=req.body.imgid;
+
             img=req.body.fileupload;
+            name=req.body.name;
+            date=req.body.date;
+            dest=req.body.dest;
+            cost=req.body.cost;
 
-            const myquery="INSERT INTO gallery (g_id, g_images) VALUES (? ,?) ";
 
-            connection.query(myquery, [ id , img ], (err, result, field) => {
+            const myquery="INSERT INTO gallery (a_id, g_id, g_images, g_name, g_date, g_des, g_cost) VALUES (?, ?, ?, ?, ?, ?, ?) ";
+
+            connection.query(myquery, [ aid, imgid , img, name, date,  dest, cost ], (err, result, field) => {
                 if(!err)
                 {
-                    console.log('Image insterted');
-                    res.redirect('/artist-upload.html');
+                    if(req.file == undefined)
+                    {
+                        res.render('artistmain.hbs', {upload : 'File not selected'})
+                    }
+                    else
+                    {
+
+                        console.log('Image insterted');
+                        res.render('artistmain.hbs', { upload : 'File uploaded' });
+                    }
                 }
                 else
                 {
@@ -562,7 +577,7 @@ module.exports= (app, passport, hbs,  nodemailer) => {
     })
 
     app.get('/imageupload', (req, res ) => {
-        res.render('art-upload.ejs');
+        res.render('artist-upload.hbs');
     })
 
 
